@@ -1,0 +1,135 @@
+
+nav a span{
+  font-weight: bold;
+}
+
+nav .sidenav-trigger{
+  margin: 0;
+}
+
+nav a{
+  font-size: x-large;
+}
+
+.dashboard{
+  margin-top: 20px;
+}
+
+.card-panel{
+  border-radius: 10px;
+}
+
+.day-title{
+  font-weight: bolder;
+}
+
+
+.sbody {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fafafa;
+}
+
+
+.logo {
+  background-image: url("/img/Logo1.png");
+  width:100px;
+  height:100px;
+  border-radius: 50%;
+  margin:0 auto;
+}
+
+
+
+.bd{
+  border-radius: 10px;
+  background: white;
+  box-shadow: 0px 0px 8px rgba(0,0,0,0.1);
+  text-align: center;
+  display: block;
+}
+
+.log{
+  width: 430px;
+  padding: 30px;
+  margin: 100px auto;
+  border-radius: 10px;
+  background-color: white;
+  box-shadow: 0px 0px 8px rgba(0,0,0,0.1);
+  text-align: center;
+
+}
+
+
+.card-panel.staffdt{
+  width: 100%;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0px 0px 0px rgba(90,90,90,0.1);
+  display: grid;
+  grid-template-columns: 4fr 6fr;
+  grid-template-areas: "image details";
+  position: relative;
+}
+.staffdt img{
+  grid-area: image;
+  max-width: 200px;
+}
+.staffdt-details{
+  grid-area: details;
+}
+
+
+
+.card-panel.full{
+  width: 100%;
+}
+
+.tatd{
+  width: 100vw;
+
+} 
+
+.sidenav-close{
+  width: 100vw;
+
+}
+
+.stud-atd{
+  display: grid;
+  grid-template-columns: 4.5fr 4.5fr 1fr;
+  grid-template-areas: "name rollNo atd";
+
+}
+
+.stud-atd strong{
+  grid-area: name;
+}
+
+.stud-atd span{
+  grid-area: rollNo;
+}
+
+.stud-atd input{
+  grid-area: atd;
+}
+/* auth styles 
+.auth{
+  top: 55px;
+  width: 100vw;
+  height: 100vh;
+  display: none;
+  position: absolute;
+  z-index: 3;
+  background-color: white;
+}
+
+.auth.open{
+  display: block;
+}
+*/

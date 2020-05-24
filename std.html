@@ -1,0 +1,117 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>AEI-ATTENDENCE</title>
+  <!-- materialize icons, css & js -->
+  <link type="text/css" href="/css/materialize.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link type="text/css" href="/css/styles.css" rel="stylesheet">
+  <link rel="manifest" href="/manifest.json">
+  <!-- ios support -->
+  <link rel="apple-touch-icon" href="/img/icons/icon-96x96.png">
+  <meta name="apple-mobile-web-app-status-bar" content="#283593">
+  <meta name="theme-color" content="#283593">
+</head>
+<body class="grey lighten-4">
+
+<!--Nav-bar-->
+<nav class="nav-wraper indigo">
+  <div class="container">
+     <a href="/std.html" class="brand-logo left">AEI</a>
+    <span class="right"><i class="material-icons sidenav-trigger" data-target="side-menu">menu</i></span>
+  </div>
+</nav>
+
+<div class="container ">
+  <ul id="side-menu" class="sidenav side-menu">
+    <li><div class="user-view">
+      <div class="background">
+        <img src="/img/back.jpg" >
+      </div>
+      <a href="#user" ><img class="circle" src="/img/me.png" ></a>
+      <a href="#name" class="name"></a>
+    </div></li>
+    <li><a href="/std.html" class="waves-effect" ><i class="material-icons">dashboard</i>Dashboard</a></li>
+    <li><a class="waves-effect" href="/attendence.html"><i class="material-icons">assignment</i>Attendence</a></li>
+    <li><div class="divider"></div></li>
+    <li ><a class="waves-effect logout" ><i class="material-icons">fingerprint</i>Log-out</a></li> 
+  </ul> 
+</div>
+
+<!--Dashboard-->
+<div class="container ">
+  <div class="card-panel dashboard white row std-details">
+
+  </div>
+  <br> 
+   
+  <ul class="collapsible" data-collapsible="accordion" >
+
+    <li >
+      <div class="collapsible-header day-title">
+        Monday
+      </div>
+      <div class="collapsible-body" id="monday"></div>
+    </li>
+
+    <li >
+      <div class="collapsible-header day-title">
+        Tuesday
+      </div>
+      <div class="collapsible-body"id="tuesday"></div>
+    </li>
+
+    <li >
+      <div class="collapsible-header day-title">
+        Wednesday
+      </div>
+      <div class="collapsible-body" id="wednesday"></div>
+    </li>
+
+    <li >
+      <div class="collapsible-header day-title">
+        Thursday
+      </div>
+      <div class="collapsible-body" id="thursday"></div>
+    </li>
+
+    <li >
+      <div class="collapsible-header day-title">
+        Friday
+      </div>
+      <div class="collapsible-body" id="friday"></div>
+    </li>
+
+    <li >
+      <div class="collapsible-header day-title">
+        Saturday
+      </div>
+      <div class="collapsible-body" id="saturday"></div>
+    </li>
+  </ul>
+
+</div>
+
+
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="/__/firebase/7.14.3/firebase-app.js"></script>
+<script src="/__/firebase/7.14.3/firebase-auth.js"></script>
+<script src="/__/firebase/7.14.3/firebase-firestore.js"></script>
+<script src="/__/firebase/7.14.3/firebase-functions.js"></script>
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="/__/firebase/7.14.3/firebase-analytics.js"></script>
+<!-- Initialize Firebase -->
+<script src="/__/firebase/init.js"></script>
+
+<script src="/js/ui.js"></script>
+<script src="/js/db.js"></script>
+
+<script type="text/javascript" src="./js/materialize.min.js"></script>
+
+  <script src="/js/app.js"></script>
+  <script src="/js/std.js"></script>
+</body>
+</html>
