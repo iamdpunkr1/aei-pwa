@@ -30,95 +30,70 @@ const setUI = user => {
 
        const name= document.querySelector('.name');
        const std= document.querySelector('.std-details');
+                  
+       const mon = document.getElementById('monday');
+       const tue = document.getElementById('tuesday');
+       const wed = document.getElementById('wednesday');
+       const thu = document.getElementById('thursday');
+       const fri = document.getElementById('friday');
+       const sat = document.getElementById('saturday');
+
+       const setRoutine=(voc,day)=>{
+        const html= `   <div class="card-panel">
+                         <h5>${voc.data().subject}</h5>
+                         <hr>
+                         <p>${voc.data().teacher}<br>
+                         Room: ${voc.data().room} <br>
+                         Time: ${voc.data().time}
+                        </p>
+                      </div>`;
+                      day.innerHTML+=html;
+       }
+
        db.collection('student').doc(user.uid).get().then(doc => {
              const html = ` <span class="white-text ">${doc.data().name}</span>&nbsp;&nbsp;<span class="white-text ">|&nbsp;&nbsp;${doc.data().rollNo}</span>
                              <br><span class="white-text ">Registration No: ${doc.data().reg}</span>`;
              name.innerHTML= html;
              
-            const div = `    <h5 class="grey-text text-darken-3">${doc.data().branch} Engineering Dept</h5>
-                               <hr>
+            const div = `    <h5 class="grey-text text-darken-3"><strong>${doc.data().branch} Engg Dept<strong></h5>
                              <p class="grey-text text-darken-2">Semester: ${doc.data().sem} <br>Please logout and login to see details</p>`;
             std.innerHTML=div;
-            
-            const mon = document.querySelector('#monday');
-            const tue = document.querySelector('#tuesday');
-            const wed = document.querySelector('#wednesday');
-            const thu = document.querySelector('#thursday');
-            const fri = document.querySelector('#friday');
-            const sat = document.querySelector('#saturday');
+
+            console.log(doc.data().subjects['Artificial Intelligence']) ;
+
+            for (var i in doc.data().subjects){
+               console.log(i, doc.data().subjects[i]);
+            }
+
             if(doc.data().branch === 'Computer' && doc.data().sem === 6) {      
                db.collection('routine').where('branch','==',doc.data().branch).where('sem','==',doc.data().sem).orderBy('period').get().then(coc=>{
                    coc.forEach((voc)=>{
-                       if(voc.data().day === 'Monday'){
-               
-                                       const html= `   <div class="card-panel dashboard">
-                                                       <h5>${voc.data().subject}</h5><hr>
-                                                       <p>${voc.data().teacher}<br>
-                                                       Room: ${voc.data().room} <br>
-                                                       Time: ${voc.data().time}
-                                                        </p>
-                                                        </div>`;
-                                     mon.innerHTML+=html;
+                       if(voc.data().day === 'Monday'){              
+                              setRoutine(voc,mon);
                           }
 
                           if(voc.data().day === 'Tuesday'){
-               
-                            const html= `   <div class="card-panel dashboard">
-                                               <h5>${voc.data().subject}</h5><hr>
-                                               <p> ${voc.data().teacher}<br>
-                                               Room: ${voc.data().room} <br>
-                                               Time: ${voc.data().time}
-                                               </p>
-                                             </div>`;
-                               tue.innerHTML+=html;
+                            setRoutine(voc,tue);
                           }
 
                           if(voc.data().day === 'Wednesday'){
                
-                            const html= `   <div class="card-panel dashboard">
-                                               <h5>${voc.data().subject}</h5><hr>
-                                               <p> ${voc.data().teacher}<br>
-                                               Room: ${voc.data().room} <br>
-                                               Time: ${voc.data().time}
-                                               </p>
-                                             </div>`;
-                               wed.innerHTML+=html;
+                            setRoutine(voc,wed);
                           }
 
                           if(voc.data().day === 'Thursday'){
                
-                            const html= `   <div class="card-panel dashboard">
-                                               <h5>${voc.data().subject}</h5><hr>
-                                               <p> ${voc.data().teacher}<br>
-                                               Room: ${voc.data().room} <br>
-                                               Time: ${voc.data().time}
-                                               </p>
-                                             </div>`;
-                               thu.innerHTML+=html;
+                            setRoutine(voc,thu);
                           }
 
                           if(voc.data().day === 'Friday'){
                
-                            const html= `   <div class="card-panel dashboard">
-                                               <h5>${voc.data().subject}</h5><hr>
-                                               <p> ${voc.data().teacher}<br>
-                                               Room: ${voc.data().room} <br>
-                                               Time: ${voc.data().time}
-                                               </p>
-                                             </div>`;
-                               fri.innerHTML+=html;
+                            setRoutine(voc,fri);
                           }
 
                           if(voc.data().day === 'Saturday'){
                
-                            const html= `   <div class="card-panel dashboard">
-                                               <h5>${voc.data().subject}</h5><hr>
-                                               <p> ${voc.data().teacher}<br>
-                                               Room: ${voc.data().room} <br>
-                                               Time: ${voc.data().time}
-                                               </p>
-                                             </div>`;
-                               sat.innerHTML+=html;
+                            setRoutine(voc,sat);
                           }
            })  
      

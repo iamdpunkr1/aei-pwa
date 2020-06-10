@@ -8,7 +8,7 @@ auth.onAuthStateChanged(user => {
                 setUI(user);
               }
           });
-        console.log('Inside STAFF.js', user);
+        console.log('Inside STAFF.js');
                     //Staff Logout 
                     const slogout = document.querySelector('.slogout');
                     slogout.addEventListener('click',(e) => {
@@ -23,8 +23,6 @@ auth.onAuthStateChanged(user => {
                 window.location.replace("index.html");
             }
    });
-
-
 
    //set faculty details function
 const setUI = user => {
@@ -55,181 +53,150 @@ const setUI = user => {
     const tatd = document.querySelectorAll('.tatd');
     let a=0;
 
+//seting Take Attendence
+const takeAttendence = (voc,dy) => {
+
+  const div=`            
+  <button class="btn pink waves-effect waves-lighten-2 sidenav-close" href="#!">CLOSE</button>
+  <div class="container">
+  <div class="card-panel center">
+     <h4><strong>Today's Attendence</strong></h4>
+     <h6>${voc.data().time} | ${dy}</h6>
+     <h6>${voc.data().subject} | ${voc.data().branch}.Engg </h6>
+     <h6> Room No: ${voc.data().room} | ${voc.data().sem}th SEM </h6>
+     <h6>Total Students: ${a}</h6>
+     </div>
+     <form>
+     <div class="students${a}"></div>
+     <div class="input-field white">
+     <textarea id="textarea1" class="materialize-textarea " style="height: 100px; border: 1px solid black; border-radius: 5px;"></textarea>
+     <label for="textarea1">Today's Topic</label>
+     </div>
+     <div class="center">
+     <button class="btn indigo left-align waves-effect waves-lighten-2">&nbsp; SUBMIT &nbsp;</button>
+     &nbsp;&nbsp;&nbsp; 
+     <input type="reset" class="btn pink left-align waves-effect waves-lighten-2 ">
+     </form>
+    </div>
+   </br>
+  </div>`;
+
+  tatd[a].innerHTML=div;
+  tatd[a].setAttribute('id',voc.id);
+  //setting students
+  const stud = document.querySelector('.students'+a);
+  console.log(stud);
+ db.collection('student').where('branch','==',voc.data().branch).where('sem','==',voc.data().sem).get().then((eoc) => {
+  eoc.forEach((foc)=>{
+    const html =`    
+    <div class="card-panel stud-atd" id="${foc.id}">
+     <strong>${foc.data().name}</strong>  
+     <span>  ${foc.data().rollNo}  </span>
+      <label class="right">
+        <input type="checkbox" class="attend" value="${foc.id}"/>
+        <span></span>
+      </label>
+     </div>`;
+     stud.innerHTML+=html;
+  }) 
+});  
+a++;
+
+const form = document.querySelector('form');
+const rollNo = document.getElementsByClassName('attend');
+const array = [];
+form.addEventListener('submit',(e)=>{
+     e.preventDefault();
+
+     for(i=0;i<rollNo.length;i++){
+       if(rollNo[i].checked){
+          array.push(rollNo[i].value)
+          const change = db.collection('student').doc(rollNo[i].value);
+          change.update({
+              subjects:({
+                [voc.data().subject]: firebase.firestore.FieldValue.increment(1)
+              })
+          })
+     }
+    }
 
 
+    /* 
+    db.collection('attendence').add({
+       branch: voc.data().branch,
+       subject:voc.data().subject,
+       date:dy,
+       time:voc.data().time,
+       students:[...array]
+     })
+    */
+     console.log('Done')
+
+})
+
+}  
+
+
+//Setting Routine
+const setAtd= (voc, dy)=>{
+      const html = `
+      <div class="card-panel">
+       <p><strong>${voc.data().day}</strong> </p>
+       <h4 ><strong>Period - ${voc.data().period}</strong></h4>
+       <h6>Time: ${voc.data().time}</h6>
+       <h5>${voc.data().subject}</h5>
+       <h6>${voc.data().branch} Engg / ${voc.data().sem} SEM  </h6>
+       <br>
+       <button class="btn-small indigo left-align waves-effect waves-lighten-2 flow-text sidenav-trigger"  data-target="${voc.id}" >TAKE ATTENDENCE</button>
+       <button data-target="#" class="btn-small pink left-align waves-effect waves-lighten-2 sidenav-trigger flow-text">CANCEL</button>
+      </div>`;
+     dy.innerHTML+=html;
+
+     //setting take attendence only to Today and Yesterday
+    if(voc.data().day != daylist[day+1]){
+
+      if(voc.data().day == daylist[day]){
+        takeAttendence(voc,toda);
+       } 
+
+      if(voc.data().day == daylist[day]-1){  
+        takeAttendence(voc,yoda);
+       }
+     }
+
+
+ 
+    }
+
+//settting Faculty Name
     db.collection('faculty').doc(user.uid).get().then(doc => {
           const html = ` <span class="white-text ">${doc.data().name}</span>`;
           name.innerHTML= html;
           dept.textContent=doc.data().dept + " Department";
 
-
-
-          
+  //setting Faculty Routine          
     db.collection('routine').where('teacher','==',doc.data().fid).orderBy('period').get().then((coc) => {
         coc.forEach((voc)=>{
 
-
             //Today's Routine
-             if(voc.data().day == daylist[day]){
+             if(voc.data().day == daylist[day]){                 
+                 setAtd(voc,today);                
+             } 
 
-                  const html = `
-                    <div class="card-panel">
-                     <p><strong>${voc.data().day}</strong> </p>
-                     <h4 ><strong>Period - ${voc.data().period}</strong></h4>
-                     <h6>Time: ${voc.data().time}</h6>
-                     <h5>${voc.data().subject}</h5>
-                     <h6>${voc.data().branch} Engg / ${voc.data().sem} SEM  </h6>
-                     <br>
-                     <button class="btn-small indigo left-align waves-effect waves-lighten-2 flow-text sidenav-trigger"  data-target="${voc.id}" >TAKE ATTENDENCE</button>
-                     <button data-target="#" class="btn-small pink left-align waves-effect waves-lighten-2 sidenav-trigger flow-text">CANCEL</button>
-                    </div>`;
-                  today.innerHTML+=html;
-
-                  const div=`            
-                  <button class="btn pink waves-effect waves-lighten-2 sidenav-close" href="#!">CLOSE</button>
-                  <div class="container">
-                  <div class="card-panel center">
-                     <h4><strong>Today's Attendence</strong></h4>
-                     <h6>${voc.data().time} | ${toda}</h6>
-                     <h6>${voc.data().subject} | ${voc.data().branch}.Engg </h6>
-                     <h6> Room No: ${voc.data().room} | ${voc.data().sem}th SEM </h6>
-                     <h6>Total Students: ${a}</h6>
-                     </div>
-                     <div class="students${a}"></div>
-                     <div class="input-field white">
-                     <textarea id="textarea1" class="materialize-textarea " style="height: 100px; border: 1px solid black; border-radius: 5px;"></textarea>
-                     <label for="textarea1">Today's Topic</label>
-                     </div>
-                     <div class="center">
-                     <a href="" class="btn indigo left-align waves-effect waves-lighten-2">&nbsp; SUBMIT &nbsp;</a>
-                     &nbsp;&nbsp;&nbsp; 
-                     <a href="#modal1" class="btn pink left-align waves-effect waves-lighten-2 modal-trigger">&nbsp; RESET &nbsp;</a>
-                   </div>
-                   </br>
-                  </div>`;
-               
-                  tatd[a].innerHTML=div;
-                  tatd[a].setAttribute('id',voc.id);
-                  //setting students
-                  const stud = document.querySelector('.students'+a);
-                  console.log(stud);
-                 db.collection('student').where('branch','==',voc.data().branch).where('sem','==',voc.data().sem).get().then((eoc) => {
-                  eoc.forEach((foc)=>{
-                    const html =`    
-                    <div class="card-panel stud-atd" id="${foc.id}">
-                    <strong>${foc.data().name}</strong>  
-                     <span>  ${foc.data().rollNo}  </span>
-                      <label class="right">
-                        <input type="checkbox" />
-                        <span></span>
-                      </label>
-                     </div>`;
-                     stud.innerHTML+=html;
-                  }) 
-                });
-                 
-                  a++;
-                  console.log(voc.id);
-
-
-
-
-                 
-             }
-
-
-          
              //Tommorow routine
             if(voc.data().day == daylist[day+1]){
+              setAtd(voc,tom); 
 
-                const html = `
-                <div class="card-panel ">
-                  <p><strong>${voc.data().day}</strong> </p>
-                  <h4 ><strong>Period - ${voc.data().period}</strong></h4>
-                  <h6>Time: ${voc.data().time}</h6>
-                  <h5>${voc.data().subject}</h5>
-                  <h6>${voc.data().branch} Engg / ${voc.data().sem} SEM </h6>
-                   <br>
-                  <a class="btn-small pink left-align waves-effect waves-lighten-2 flow-text" href="/takeattendence.html" >CANCEL</a>
-                  </div>`;
-                tom.innerHTML+=html;
-
-              }
-           
+              }           
             //Yesterday routine
             if(voc.data().day == daylist[day-1]){
-
-                const html = `
-                <div class="card-panel ">
-                  <p><strong>${voc.data().day}</strong> </p>
-                  <h4 ><strong>Period - ${voc.data().period}</strong></h4>
-                  <h6>Time: ${voc.data().time}</h6>
-                  <h5>${voc.data().subject}</h5>
-                  <h6>${voc.data().branch} Engg / ${voc.data().sem} SEM </h6>
-                   <br>
-                  <button class="btn-small indigo left-align waves-effect waves-lighten-2 flow-text sidenav-trigger" data-target="${voc.id}" >EDIT ATTENDENCE</button>
-                  </div>`;
-                yesterday.innerHTML+=html;
-
-                const div=`            
-                <button class="btn pink waves-effect waves-lighten-2 sidenav-close" href="#!">CLOSE</button>
-                <div class="container">
-                <div class="card-panel center">
-                   <h4><strong>Yesterday's Attendence</strong></h4>
-                   <h6>${voc.data().time} | ${yoda}</h6>
-                   <h6>${voc.data().subject} | ${voc.data().branch}.Engg </h6>
-                   <h6> Room No: ${voc.data().room} | ${voc.data().sem}th SEM </h6>
-                   <h6>Total Students: ${a}</h6>
-                   </div>
-                   <div class="students${a}"></div>
-                   <div class="input-field white">
-                   <textarea id="textarea1" class="materialize-textarea " style="height: 100px; border: 1px solid black; border-radius: 5px;"></textarea>
-                   <label for="textarea1">Yesterday's Topic</label>
-                   </div>
-                   <div class="center">
-                   <a href="" class="btn indigo left-align waves-effect waves-lighten-2">&nbsp; SUBMIT &nbsp;</a>
-                   &nbsp;&nbsp;&nbsp; 
-                   <a href="#modal1" class="btn pink left-align waves-effect waves-lighten-2 modal-trigger">&nbsp; RESET &nbsp;</a>
-                 </div>
-                 </br>
-
-                   </div>`;
-             
-                tatd[a].innerHTML=div;
-                tatd[a].setAttribute('id',voc.id);
-                //setting students
-                const stud = document.querySelector('.students'+a);
-                console.log(stud);
-               db.collection('student').where('branch','==',voc.data().branch).where('sem','==',voc.data().sem).get().then((eoc) => {
-                eoc.forEach((foc)=>{
-                  const html =`    
-                  <div class="card-panel stud-atd" id="${foc.id}">
-                  <strong>${foc.data().name}</strong>  
-                   <span>  ${foc.data().rollNo}  </span>
-                    <label class="right">
-                      <input type="checkbox" />
-                      <span></span>
-                    </label>
-                   </div>`;
-                   stud.innerHTML+=html;
-                }) 
-              });
-               
-                a++;
-                console.log(voc.id);
-
+               setAtd(voc,yesterday);
             }
-
-
           });
-
          });
-
         });
 
-
-        console.log("Today is : " + daylist[day] + ".");
-        console.log("Tomorrow is : " + daylist[day+1] + ".");
+        //setting time and date
         var hour = todays.getHours();
         var minute = todays.getMinutes();
         var second = todays.getSeconds();
@@ -252,18 +219,18 @@ const setUI = user => {
         { 
         if (minute===0 && second===0)
         { 
-        hour=12;
-        prepand=' Midnight';
+         hour=12;
+         prepand=' Midnight';
         } 
         else
         { 
-        hour=12;
-        prepand=' AM';
+         hour=12;
+         prepand=' AM';
         } 
         } 
 
       console.log("Current Time : "+hour + prepand + " : " + minute + " : " + second);
-
-
   }
+
+
 
