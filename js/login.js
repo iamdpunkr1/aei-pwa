@@ -15,6 +15,7 @@ adminForm.addEventListener('submit', (e) => {
 
 
 // listen for auth status changes
+
 auth.onAuthStateChanged(user => {
   if (user) {
     user.getIdTokenResult().then(idTokenResult => {

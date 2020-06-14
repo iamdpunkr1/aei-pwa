@@ -59,11 +59,11 @@ const setUI = user => {
                              <p class="grey-text text-darken-2">Semester: ${doc.data().sem} <br>Please logout and login to see details</p>`;
             std.innerHTML=div;
 
-            console.log(doc.data().subjects['Artificial Intelligence']) ;
+      //      console.log(doc.data().subjects['Artificial Intelligence']) ;
 
-            for (var i in doc.data().subjects){
-               console.log(i, doc.data().subjects[i]);
-            }
+       //     for (var i in doc.data().subjects){
+      //         console.log(i, doc.data().subjects[i]);
+     //       }
 
             if(doc.data().branch === 'Computer' && doc.data().sem === 6) {      
                db.collection('routine').where('branch','==',doc.data().branch).where('sem','==',doc.data().sem).orderBy('period').get().then(coc=>{

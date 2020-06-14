@@ -52,89 +52,151 @@ const setUI = user => {
     const tom= document.querySelector('#tomorrow');
     const tatd = document.querySelectorAll('.tatd');
     let a=0;
+    let b=0;
+
+
+
 
 //seting Take Attendence
-const takeAttendence = (voc,dy) => {
+const takeAttendence = (voc,dy,doc) => {
 
-  const div=`            
-  <button class="btn pink waves-effect waves-lighten-2 sidenav-close" href="#!">CLOSE</button>
-  <div class="container">
-  <div class="card-panel center">
-     <h4><strong>Today's Attendence</strong></h4>
-     <h6>${voc.data().time} | ${dy}</h6>
-     <h6>${voc.data().subject} | ${voc.data().branch}.Engg </h6>
-     <h6> Room No: ${voc.data().room} | ${voc.data().sem}th SEM </h6>
-     <h6>Total Students: ${a}</h6>
-     </div>
-     <form>
-     <div class="students${a}"></div>
-     <div class="input-field white">
-     <textarea id="textarea1" class="materialize-textarea " style="height: 100px; border: 1px solid black; border-radius: 5px;"></textarea>
-     <label for="textarea1">Today's Topic</label>
-     </div>
-     <div class="center">
-     <button class="btn indigo left-align waves-effect waves-lighten-2">&nbsp; SUBMIT &nbsp;</button>
-     &nbsp;&nbsp;&nbsp; 
-     <input type="reset" class="btn pink left-align waves-effect waves-lighten-2 ">
-     </form>
-    </div>
-   </br>
-  </div>`;
+const div=`            
+<button class="btn pink waves-effect waves-lighten-2 sidenav-close" href="#!">CLOSE</button>
+<div class="container">
+<div class="card-panel center">
+   <h4><strong>Take Attendence</strong></h4>
+   <h6>${voc.data().time} | ${dy}</h6>
+   <h6>${voc.data().subject} | ${voc.data().branch}.Engg </h6>
+   <h6> Room No: ${voc.data().room} | ${voc.data().sem}th SEM </h6>
+   <h6>Total Students: ${a}</h6>
+   </div>
+   <form id="${b}" class="frm${b}">
+   <div class="students${a}"></div>
+   <div class="input-field white">
+   <textarea id="textarea1" class="materialize-textarea " style="height: 100px; border: 1px solid black; border-radius: 5px;"></textarea>
+   <label for="textarea1">Today's Topic</label>
+   </div>
+   <div class="center">
+   <button class="btn indigo left-align waves-effect waves-lighten-2">&nbsp; SUBMIT &nbsp;</button>
+   &nbsp;&nbsp;&nbsp; 
+   <input type="reset" class="btn pink left-align waves-effect waves-lighten-2 ">
+   </form>
+  </div>
+ </br>
+</div>`;
 
-  tatd[a].innerHTML=div;
-  tatd[a].setAttribute('id',voc.id);
-  //setting students
-  const stud = document.querySelector('.students'+a);
-  console.log(stud);
- db.collection('student').where('branch','==',voc.data().branch).where('sem','==',voc.data().sem).get().then((eoc) => {
-  eoc.forEach((foc)=>{
-    const html =`    
-    <div class="card-panel stud-atd" id="${foc.id}">
-     <strong>${foc.data().name}</strong>  
-     <span>  ${foc.data().rollNo}  </span>
-      <label class="right">
-        <input type="checkbox" class="attend" value="${foc.id}"/>
-        <span></span>
-      </label>
-     </div>`;
-     stud.innerHTML+=html;
-  }) 
+tatd[a].innerHTML=div;
+tatd[a].setAttribute('id',voc.id);
+//setting students
+const stud = document.querySelector('.students'+b);
+console.log(stud);
+db.collection('student').where('branch','==',voc.data().branch).where('sem','==',voc.data().sem).get().then((eoc) => {
+eoc.forEach((foc)=>{
+  const html =`    
+  <div class="card-panel stud-atd" id="${foc.id}">
+   <strong>${foc.data().name}</strong>  
+   <span>  ${foc.data().rollNo}  </span>
+    <label class="right">
+      <input type="checkbox" id="${foc.data().rollNo} " name="attend" value="${foc.id}"/>
+      <span></span>
+    </label>
+   </div>`;
+   stud.innerHTML+=html;
+}) 
 });  
+let c=0;
 a++;
-
-const form = document.querySelector('form');
-const rollNo = document.getElementsByClassName('attend');
+const form = document.querySelector('.frm'+b);
 const array = [];
+
 form.addEventListener('submit',(e)=>{
-     e.preventDefault();
+   e.preventDefault();
+   const rollNo= form.elements.attend; 
+   for(i=0;i<rollNo.length;i++){
+    const change = db.collection('student').doc(rollNo[i].value);
+     if(rollNo[i].checked){
+      array.push(rollNo[i].id)
+      change.get().then(student=>{
+        for(var j in student.data().subjects){
+          if(voc.data().subject==j && j=='Software Engineering'){
+            change.update({                
+              "subjects.Software Engineering.attended": firebase.firestore.FieldValue.increment(1),
+              "subjects.Software Engineering.total": firebase.firestore.FieldValue.increment(1)
+             })
+          }
 
-     for(i=0;i<rollNo.length;i++){
-       if(rollNo[i].checked){
-          array.push(rollNo[i].value)
-          const change = db.collection('student').doc(rollNo[i].value);
-          change.update({
-              subjects:({
-                [voc.data().subject]: firebase.firestore.FieldValue.increment(1)
-              })
-          })
+          if(voc.data().subject==j && j=='Cryptography & Network Security'){
+            change.update({                
+              "subjects.Cryptography & Network Security.attended": firebase.firestore.FieldValue.increment(1),
+              "subjects.Cryptography & Network Security.total": firebase.firestore.FieldValue.increment(1)
+             })
+          }
+
+          if(voc.data().subject==j && j=='Artificial Intelligence'){
+            change.update({                
+              "subjects.Artificial Intelligence.attended": firebase.firestore.FieldValue.increment(1),
+              "subjects.Artificial Intelligence.total": firebase.firestore.FieldValue.increment(1)
+             })
+          }
+        }
+         
+      })
+     }else{
+      change.get().then(student=>{
+        for(var j in student.data().subjects){
+          if(voc.data().subject==j && j=='Software Engineering'){
+            change.update({                
+              
+              "subjects.Software Engineering.total": firebase.firestore.FieldValue.increment(1)
+             })
+          }
+
+          if(voc.data().subject==j && j=='Cryptography & Network Security'){
+            change.update({                
+            
+              "subjects.Cryptography & Network Security.total": firebase.firestore.FieldValue.increment(1)
+             })
+          }
+
+          if(voc.data().subject==j && j=='Artificial Intelligence'){
+            change.update({                
+           
+              "subjects.Artificial Intelligence.total": firebase.firestore.FieldValue.increment(1)
+             })
+          }
+        }
+         
+      })
      }
-    }
+
+  }
 
 
-    /* 
-    db.collection('attendence').add({
-       branch: voc.data().branch,
-       subject:voc.data().subject,
-       date:dy,
-       time:voc.data().time,
-       students:[...array]
-     })
-    */
-     console.log('Done')
+  db.collection('attendence').add({
+     branch: voc.data().branch,
+     subject:voc.data().subject,
+     date:dy,
+     time:voc.data().time,
+     students:[...array],
+     fid:doc.data().fid,
+     sem: voc.data().sem,
+     serial: c
+   })
 
-})
+   array.length=0;
+//Closing the form after giving the attendence
+ const menu =  document.querySelectorAll('.tatd'); 
+ menu.forEach(each=>{
+  M.Sidenav.getInstance(each).close();
+ })
 
-}  
+ 
+ 
+
+}) 
+b++;
+c++;
+} 
 
 
 //Setting Routine
@@ -152,21 +214,7 @@ const setAtd= (voc, dy)=>{
       </div>`;
      dy.innerHTML+=html;
 
-     //setting take attendence only to Today and Yesterday
-    if(voc.data().day != daylist[day+1]){
-
-      if(voc.data().day == daylist[day]){
-        takeAttendence(voc,toda);
-       } 
-
-      if(voc.data().day == daylist[day]-1){  
-        takeAttendence(voc,yoda);
-       }
-     }
-
-
- 
-    }
+ }
 
 //settting Faculty Name
     db.collection('faculty').doc(user.uid).get().then(doc => {
@@ -180,7 +228,8 @@ const setAtd= (voc, dy)=>{
 
             //Today's Routine
              if(voc.data().day == daylist[day]){                 
-                 setAtd(voc,today);                
+                 setAtd(voc,today);    
+                 takeAttendence(voc,toda,doc);            
              } 
 
              //Tommorow routine
@@ -191,6 +240,7 @@ const setAtd= (voc, dy)=>{
             //Yesterday routine
             if(voc.data().day == daylist[day-1]){
                setAtd(voc,yesterday);
+               takeAttendence(voc,yoda,doc);
             }
           });
          });
@@ -230,7 +280,14 @@ const setAtd= (voc, dy)=>{
         } 
 
       console.log("Current Time : "+hour + prepand + " : " + minute + " : " + second);
+      
+
   }
 
+  /*
+  const ar =['ss','ab','ml','ss','ab'];
+const unique = new Set(ar);
+const back = [...unique];
+*/
 
 

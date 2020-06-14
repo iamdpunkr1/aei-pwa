@@ -1,0 +1,36 @@
+.repo,.repo th,td,tr{
+    border: solid #424242 2px;
+  
+  }
+  
+  .repo,.repo td{
+    padding: 2px;
+  }
+  
+  @media only screen and (max-width: 490px) {
+    .repo,.repo th,td,tr{
+      font-size: small;
+    
+    }
+  }
+  
+  @media only screen and (max-width: 420px) {
+    .repo,.repo th,td,tr{
+      font-size: x-small;
+    
+    }
+  }
+  
+  @media only screen and (max-width: 350px) {
+    .repo,.repo th,td,tr{
+      font-size: xx-small;
+    
+    }
+  }
+  
+  @media only screen and (max-width: 325px) {
+    .repo,.repo th,td,tr{
+      font-size: smaller;
+    
+    }
+  }

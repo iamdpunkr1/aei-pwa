@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 ///clock
+/*
 const deg = 6;
 const hr = document.querySelector('#hr');
 const mn = document.querySelector('#mn');
@@ -36,7 +37,7 @@ setInterval(()=>{
 
 
 
-
+*/
 
 
 
