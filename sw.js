@@ -1,21 +1,29 @@
-const staticCacheName = 'site-static-v3';
-const dynamicCacheName = 'site-dynamic-v3';
+const staticCacheName = 'site-static-v7';
+const dynamicCacheName = 'site-dynamic-v7';
 const assets = [
   '/',
   '/index.html',
+  '/staff.html',
+  '/std.html',
   '/js/app.js',
   '/js/ui.js',
-  'js/jquery.js',
+  'js/db.js',
+  'js/std.js',
+  'js/staff.js',
+  'js/logBook.js',
+  'js/report.js',
+  'js/login.js',
+  'js/attendence.js',
   '/js/materialize.min.js',
   '/css/styles.css',
+  '/css/report.css',
   '/css/materialize.min.css',
   'https://fonts.googleapis.com/icon?family=Material+Icons',
   'https://fonts.gstatic.com/s/materialicons/v47/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2',
-  '/pages/fallback.html',
+  '/pages/404.html',
   '/pages/attendence.html',
-  '/pages/contact.html',
-  '/pages/takeattendence.html',
-  'log.html'
+  '/pages/logBook.html',
+  '/pages/report.html'
 ];
 
 // cache size limit function
@@ -54,23 +62,25 @@ self.addEventListener('activate', evt => {
   );
 });
 
-// fetch event
+// fetch events
 self.addEventListener('fetch', evt => {
-  //console.log('fetch event', evt);
-/*  evt.respondWith(
-    caches.match(evt.request).then(cacheRes => {
-      return cacheRes || fetch(evt.request).then(fetchRes => {
-        return caches.open(dynamicCacheName).then(cache => {
-          cache.put(evt.request.url, fetchRes.clone());
-          // check cached items size
-          limitCacheSize(dynamicCacheName, 20);
-          return fetchRes;
-        })
-      });
-    }).catch(() => {
-      if(evt.request.url.indexOf('.html') > -1){
-        return caches.match('/pages/fallback.html');
-      } 
-    })
-  ); */
+
+  if(evt.request.url.indexOf('firestore.googleapis.com') === -1){
+    evt.respondWith(
+      caches.match(evt.request).then(cacheRes => {
+        return cacheRes || fetch(evt.request).then(fetchRes => {
+          return caches.open(dynamicCacheName).then(cache => {
+            cache.put(evt.request.url, fetchRes.clone());
+            // check cached items size
+            limitCacheSize(dynamicCacheName, 25);
+            return fetchRes;
+          })
+        });
+      }).catch(() => {
+        if(evt.request.url.indexOf('.html') > -1){
+          return caches.match('/pages/404.html');
+        } 
+      })
+    );
+  }
 });

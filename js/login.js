@@ -1,21 +1,13 @@
-                
-// add admin cloud function
-/*
-const adminForm = document.querySelector('.admin-actions');
-adminForm.addEventListener('submit', (e) => {
-  e.preventDefault();
-
-  const adminEmail = document.querySelector('#admin-email').value;
-  const addAdminRole = functions.httpsCallable('addAdminRole');
-  addAdminRole({ email: adminEmail }).then(result => {
-    console.log(result);
+const authSwitchLinks = document.querySelectorAll('.switch');
+const authModals = document.querySelectorAll('.log .page');
+// toggle auth modals
+authSwitchLinks.forEach(link => {
+  link.addEventListener('click', () => {
+    authModals.forEach(modal => modal.classList.toggle('active'));
   });
 });
-*/
-
 
 // listen for auth status changes
-
 auth.onAuthStateChanged(user => {
   if (user) {
     user.getIdTokenResult().then(idTokenResult => {
@@ -29,10 +21,9 @@ auth.onAuthStateChanged(user => {
       }
     }, err => console.log(err.message));
   } 
-});
-        
+});        
        //AEI-login
-        const stdlogin = document.querySelector('.std-login');
+        const stdlogin = document.getElementById('std-login');
         stdlogin.addEventListener('submit',(e) => {
               e.preventDefault();
               const email = stdlogin.email.value;
@@ -45,5 +36,18 @@ auth.onAuthStateChanged(user => {
                 stdlogin.querySelector('.error').textContent = error.message;
          });
        });
-
-
+ //forget-password
+      const forget = document.getElementById('forget');
+      forget.addEventListener('submit',(e) => {
+                    e.preventDefault();
+                    const emailAddress = forget.email.value;
+      
+                    auth.sendPasswordResetEmail(emailAddress).then(function() {
+                      // Email sent.
+                      var toastHTML = '<span class="center align-center">Password reset link successfully sent to your email</span>';
+                      M.toast({html: toastHTML});
+                    }).catch(function(error) {
+                      // An error happened.
+                      forget.querySelector('.forgoError').textContent = error.message;
+                    });
+        });

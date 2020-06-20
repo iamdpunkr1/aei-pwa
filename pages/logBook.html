@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -5,18 +6,29 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>AEI-ATTENDENCE</title>
   <!-- materialize icons, css & js -->
-  <link type="text/css" href="/css/materialize.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link type="text/css" href="/css/materialize.min.css" rel="stylesheet" async>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" async>
   <link type="text/css" href="/css/styles.css" rel="stylesheet">
   <link rel="manifest" href="/manifest.json">
   <!-- ios support -->
-  <link rel="apple-touch-icon" href="/img/icons/icon-96x96.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar" content="#283593">
-  <meta name="theme-color" content="#283593">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="AEI">
+  <link rel="apple-touch-icon" href="/img/icons/apple-icon-57x57.png" sizes="57x57">
+  <link rel="apple-touch-icon" href="/img/icons/apple-icon-60x60.png" sizes="60x60">
+  <link rel="apple-touch-icon" href="/img/icons/apple-icon-72x72.png" sizes="72x72">
+  <link rel="apple-touch-icon" href="/img/icons/apple-icon-76x76.png" sizes="76x76">
+  <link rel="apple-touch-icon" href="/img/icons/apple-icon-114x114.png" sizes="114x114">
+  <link rel="apple-touch-icon" href="/img/icons/apple-icon-120x120.png" sizes="120x120">
+  <link rel="apple-touch-icon" href="/img/icons/apple-icon-144x144.png" sizes="144x144">
+  <link rel="apple-touch-icon" href="/img/icons/apple-icon-152x152.png" sizes="152x152">
+  <link rel="apple-touch-icon" href="/img/icons/apple-icon-180x180.png" sizes="180x180">
+  <meta name="msapplication-TileImage" content="/img/icons/icon-144x144.png">
+  <meta name="msapplication-TileColor" content="#fff">
+  <meta name="theme-color" content="#283593">  
 </head>
-
 <body>
-
 <!--Nav-bar-->
 <nav class="nav-wraper indigo" >
   <div class="container">
@@ -24,7 +36,6 @@
     <span class="right"><i class="material-icons sidenav-trigger" data-target="side-menu">menu</i></span>
   </div>
 </nav>
-
 <div class="container" >
   <ul id="side-menu" class="sidenav side-menu" >
     <li><div class="user-view">
@@ -36,15 +47,12 @@
       <a href="#email"><span class="white-text dept"></span></a>
     </div></li>
     <li><a href="/staff.html" class="waves-effect" ><i class="material-icons">dashboard</i>Dashboard</a></li>
-    <li><a class="waves-effect" href=""><i class="material-icons">library_books</i>Log Book</a></li>
+    <li><a class="waves-effect" href="#"><i class="material-icons">library_books</i>Log Book</a></li>
     <li><a class="waves-effect" href="/pages/report.html"><i class="material-icons">assignment</i>Attendence Report</a></li>
     <li><div class="divider"></div></li>
-    <li><a class="waves-effect slogout" ><i class="material-icons">fingerprint</i>Log-out</a></li> 
+    <li><a class="waves-effect" id="slogout"><i class="material-icons">fingerprint</i>Log-out</a></li> 
   </ul> 
-</div>
-<br>
-
-
+</div><br>
 <div class="white container full">
   <table class="highlight centered">
     <thead>
@@ -55,30 +63,22 @@
           <th>Subject</th>
       </tr>
     </thead>
-
     <tbody id="table"> </tbody>
   </table>
-
 </div>
-
-
-
 <!-- The core Firebase JS SDK is always required and must be listed first -->
 <script src="/__/firebase/7.14.3/firebase-app.js"></script>
 <script src="/__/firebase/7.14.3/firebase-auth.js"></script>
 <script src="/__/firebase/7.14.3/firebase-firestore.js"></script>
-
 <script src="/__/firebase/7.14.3/firebase-functions.js"></script>
 <!-- TODO: Add SDKs for Firebase products that you want to use
      https://firebase.google.com/docs/web/setup#available-libraries -->
 <script src="/__/firebase/7.14.3/firebase-analytics.js"></script>
 <!-- Initialize Firebase -->
 <script src="/__/firebase/init.js"></script>
-
 <script type="text/javascript" src="/js/materialize.min.js"></script>
 <script src="/js/ui.js"></script>
 <script src="/js/db.js"></script>
-
 <script src="/js/logBook.js"></script>
 <script src="/js/app.js"></script>
 </body>
